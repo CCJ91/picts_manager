@@ -1,0 +1,42 @@
+version: "3.0"
+networks:
+  mynetwork:
+
+
+services:
+  db:
+    image: postgres
+    restart: always
+    container_name: db
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: pictsManager
+    ports:
+      - "5432:5432"
+    volumes:
+      - './database:/var/lib/postgresql/data'
+    networks:
+      - mynetwork
+
+  # backend:
+  #   image: pictsmanager/backend
+  #   build: ./back
+  #   ports:
+  #     - "7000:7000"
+  #   links:
+  #     - db
+  #   networks:
+  #     - mynetwork
+  #   depends_on:
+  #     - db
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - 8080:80
+    networks:
+      - mynetwork
